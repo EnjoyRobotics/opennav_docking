@@ -255,6 +255,9 @@ protected:
 
   std::shared_ptr<tf2_ros::Buffer> tf2_buffer_;
   std::unique_ptr<tf2_ros::TransformListener> tf2_listener_;
+
+  std::shared_ptr<rclcpp::Publisher<geometry_msgs::msg::PoseStamped>>
+    target_pose_pub_;
 };
 
 }  // namespace opennav_docking

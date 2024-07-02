@@ -92,6 +92,9 @@ DockingServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
     return nav2_util::CallbackReturn::FAILURE;
   }
 
+  // Create publisher
+  target_pose_pub_ = create_publisher<geometry_msgs::msg::PoseStamped>("target_pose", 10);
+
   return nav2_util::CallbackReturn::SUCCESS;
 }
 
@@ -431,6 +434,8 @@ bool DockingServer::approachDock(Dock * dock, geometry_msgs::msg::PoseStamped & 
       throw opennav_docking_core::FailedToControl("Failed to get control");
     }
     vel_publisher_->publish(command);
+
+    target_pose_pub_->publish(target_pose);
 
     if (this->now() - start > timeout) {
       throw opennav_docking_core::FailedToControl(
