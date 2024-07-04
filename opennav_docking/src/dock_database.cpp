@@ -34,6 +34,12 @@ bool DockDatabase::initialize(
   node_ = parent;
   auto node = node_.lock();
 
+  reload_db_service_ = node->create_service<opennav_docking_msgs::srv::ReloadDatabase>(
+    "~/reload_database",
+    std::bind(
+      &DockDatabase::reloadDbCb, this,
+      std::placeholders::_1, std::placeholders::_2));
+
   if (getDockPlugins(node, tf) && getDockInstances(node)) {
     RCLCPP_INFO(
       node->get_logger(),
@@ -41,12 +47,6 @@ bool DockDatabase::initialize(
       this->plugin_size(), this->instance_size());
     return true;
   }
-
-  reload_db_service_ = node->create_service<opennav_docking_msgs::srv::ReloadDatabase>(
-    "~/reload_database",
-    std::bind(
-      &DockDatabase::reloadDbCb, this,
-      std::placeholders::_1, std::placeholders::_2));
 
   return false;
 }
