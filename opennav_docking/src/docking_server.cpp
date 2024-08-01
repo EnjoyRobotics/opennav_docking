@@ -431,7 +431,7 @@ bool DockingServer::approachDock(Dock * dock, geometry_msgs::msg::PoseStamped & 
     // dock so that the robot never gets to the end of the spiral before its in contact
     // with the dock to stop the docking procedure.
     const float sign = dock_backwards_ ? -1.0 : 1.0;
-    const double backward_projection = 0.25 * sign;
+    const double backward_projection = 0.10 * sign;
     const double yaw = tf2::getYaw(target_pose.pose.orientation);
     target_pose.pose.position.x += cos(yaw) * backward_projection;
     target_pose.pose.position.y += sin(yaw) * backward_projection;
